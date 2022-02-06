@@ -1,4 +1,5 @@
 #include "MerkleMain.h"
+#include "CSVReader.h"
 
 #include <iostream>
 
@@ -11,20 +12,7 @@ void MerkleMain::init() {
 }
 
 void MerkleMain::loadOrderBook() {
-    orders.push_back(
-            OrderBookEntry{1000,
-                           0.02,
-                           "2020/03/17 17:01:24.884492",
-                           "BTC/USDT",
-                           OrderBookType::bid}
-    );
-    orders.push_back(
-            OrderBookEntry{2000,
-                           0.02,
-                           "2020/03/17 17:01:24.884492",
-                           "BTC/USDT",
-                           OrderBookType::bid}
-    );
+    orders = CSVReader::readCSV("testData.csv");
 }
 
 void MerkleMain::printMenu() {

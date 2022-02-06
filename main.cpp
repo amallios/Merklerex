@@ -1,4 +1,6 @@
 #include "MerkleMain.h"
+#include "CSVReader.h"
+#include "OrderBookEntry.h"
 
 #include <iostream>
 
