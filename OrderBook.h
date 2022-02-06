@@ -24,6 +24,8 @@ public:
     static double getHighPrice(std::vector<OrderBookEntry>& orders);
 /** return the price of the lowest bid in the sent set */
     static double getLowPrice(std::vector<OrderBookEntry>& orders);
+    std::string getEarliestTime();
+    std::string getNextTime(const std::string& timestamp);
 
 private:
     std::vector<OrderBookEntry> orders;

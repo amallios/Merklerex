@@ -25,6 +25,7 @@ private:
     int getUserOption();
     void processUserOption(int userOption);
     OrderBook orderBook{"testData.csv"};
+    std::string currentTime;
 };
 
 

@@ -5,6 +5,7 @@
 
 void MerkleMain::init() {
     loadOrderBook();
+    currentTime = orderBook.getEarliestTime();
     while(true) {
         printMenu();
         processUserOption(getUserOption());
@@ -29,7 +30,6 @@ void MerkleMain::printHelp() {
 }
 
 void MerkleMain::printMarketStats() {
-    std::string currentTime = "2020/03/17 17:01:24.884492";
     for (const std::string& p : orderBook.getKnownProducts()) {
         std::cout << "Product: " << p << std::endl;
         std::vector<OrderBookEntry> entries = orderBook.getOrders(OrderBookType::ask, p, currentTime);
@@ -52,7 +52,8 @@ void MerkleMain::printWallet() {
 }
 
 void MerkleMain::gotoNextTimeframe() {
-    std::cout << "6: Continue" << std::endl;
+    std::cout << "Going to next time frame. " << std::endl;
+    currentTime = orderBook.getNextTime(currentTime);
 }
 
 int MerkleMain::getUserOption() {
