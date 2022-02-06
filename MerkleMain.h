@@ -4,6 +4,7 @@
 #pragma once
 
 #include "OrderBookEntry.h"
+#include "OrderBook.h"
 
 #include<vector>
 
@@ -23,7 +24,7 @@ private:
     void gotoNextTimeframe();
     int getUserOption();
     void processUserOption(int userOption);
-    std::vector<OrderBookEntry> orders;
+    OrderBook orderBook{"testData.csv"};
 };
 
 

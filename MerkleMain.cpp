@@ -12,7 +12,7 @@ void MerkleMain::init() {
 }
 
 void MerkleMain::loadOrderBook() {
-    orders = CSVReader::readCSV("testData.csv");
+    // orders = CSVReader::readCSV("testData.csv");
 }
 
 void MerkleMain::printMenu() {
@@ -29,7 +29,14 @@ void MerkleMain::printHelp() {
 }
 
 void MerkleMain::printMarketStats() {
-    std::cout << "2: Print exchange stats" << std::endl;
+    std::string currentTime = "2020/03/17 17:01:24.884492";
+    for (const std::string& p : orderBook.getKnownProducts()) {
+        std::cout << "Product: " << p << std::endl;
+        std::vector<OrderBookEntry> entries = orderBook.getOrders(OrderBookType::ask, p, currentTime);
+        std::cout << "Asks seen: " << entries.size() << std::endl;
+        std::cout << "Max ask: " << OrderBook::getHighPrice(entries) << std::endl;
+        std::cout << "Min ask: " << OrderBook::getLowPrice(entries) << std::endl;
+    }
 }
 
 void MerkleMain::enterAsk() {
