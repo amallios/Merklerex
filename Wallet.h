@@ -1,9 +1,11 @@
 #ifndef MERKLEREX_WALLET_H
 #define MERKLEREX_WALLET_H
 
+#include "OrderBookEntry.h"
 
 #include <string>
 #include <map>
+
 class Wallet {
 public:
     Wallet();
@@ -15,6 +17,9 @@ public:
     bool containsCurrency(std::string type, double amount);
 /** generate a string representation of the wallet */
     std::string toString();
+    bool canFulfillOrder(OrderBookEntry order);
+    void processSale(OrderBookEntry& sale);
+
 private:
     std::map<std::string,double>currencies;
 };

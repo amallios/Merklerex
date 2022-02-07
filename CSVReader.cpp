@@ -46,7 +46,8 @@ OrderBookEntry CSVReader::stringsToOBE(std::string priceString,
                                        std::string amountString,
                                        std::string timestamp,
                                        std::string product,
-                                       OrderBookType orderType) {
+                                       OrderBookType orderType,
+                                       std::string username) {
     double price, amount;
     try {
         price = std::stod(priceString);

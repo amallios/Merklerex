@@ -1,4 +1,7 @@
 #include "Wallet.h"
+#include "CSVReader.h"
+
+#include <vector>
 
 Wallet::Wallet() {
 
@@ -51,4 +54,45 @@ std::string Wallet::toString() {
         s += currency + " : " + std::to_string(amount) + "\n";
     }
     return s;
+}
+
+bool Wallet::canFulfillOrder(OrderBookEntry order) {
+    std::vector<std::string> currs = CSVReader::tokenise(order.product, '/');
+
+    if (order.orderType == OrderBookType::ask) {
+        double amount = order.amount;
+        std::string currency = currs[0];
+        return containsCurrency(currency, amount);
+    }
+
+    if (order.orderType == OrderBookType::bid) {
+        double amount = order.amount * order.price;
+        std::string currency = currs[1];
+        return containsCurrency(currency, amount);
+    }
+
+    return false;
+}
+
+void Wallet::processSale(OrderBookEntry &sale) {
+    std::vector<std::string> currs = CSVReader::tokenise(sale.product, '/');
+
+    if (sale.orderType == OrderBookType::asksale) {
+        double outgoingAmount = sale.amount;
+        std::string outgoingCurrency = currs[0];
+        double incomingAmount = sale.amount * sale.price;
+        std::string incomingCurrency = currs[1];
+        currencies[incomingCurrency] += incomingAmount;
+        currencies[outgoingCurrency] -= outgoingAmount;
+    }
+
+    if (sale.orderType == OrderBookType::bidsale)
+    {
+        double incomingAmount = sale.amount;
+        std::string incomingCurrency = currs[0];
+        double outgoingAmount = sale.amount * sale.price;
+        std::string outgoingCurrency = currs[1];
+        currencies[incomingCurrency] += incomingAmount;
+        currencies[outgoingCurrency] -= outgoingAmount;
+    }
 }

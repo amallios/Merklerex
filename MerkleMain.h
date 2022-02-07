@@ -5,6 +5,7 @@
 
 #include "OrderBookEntry.h"
 #include "OrderBook.h"
+#include "Wallet.h"
 
 #include<vector>
 
@@ -26,6 +27,7 @@ private:
     void processUserOption(int userOption);
     OrderBook orderBook{"testData.csv"};
     std::string currentTime;
+    Wallet wallet;
 };
 
 

@@ -6,6 +6,7 @@
 void MerkleMain::init() {
     loadOrderBook();
     currentTime = orderBook.getEarliestTime();
+    wallet.insertCurrency("BTC", 10);
     while(true) {
         printMenu();
         processUserOption(getUserOption());
@@ -50,8 +51,16 @@ void MerkleMain::enterAsk() {
             tokens[2],
             currentTime,
             tokens[0],
-            OrderBookType::ask
+            OrderBookType::ask,
+            "simuser"
     );
+
+    if (wallet.canFulfillOrder(obe)) {
+        std::cout << "Wallet looks good. " << std::endl;
+        orderBook.insertOrder(obe);
+    } else {
+        std::cout << "Wallet has insufficient funds." << std::endl;
+    }
 }
 
 void MerkleMain::enterBid() {
@@ -65,22 +74,33 @@ void MerkleMain::enterBid() {
             tokens[2],
             currentTime,
             tokens[0],
-            OrderBookType::bid
+            OrderBookType::bid,
+            "simuser"
     );
+
+    if (wallet.canFulfillOrder(obe)) {
+        std::cout << "Wallet looks good. " << std::endl;
+        orderBook.insertOrder(obe);
+    } else {
+        std::cout << "Wallet has insufficient funds." << std::endl;
+    }
 }
 
 void MerkleMain::printWallet() {
-    std::cout << "5: Print wallet" << std::endl;
+    std::cout << wallet.toString() << std::endl;
 }
 
 void MerkleMain::gotoNextTimeframe() {
     std::cout << "Going to next time frame. " << std::endl;
-    for (std::string& p : orderBook.getKnownProducts()) {
+    for (std::string p : orderBook.getKnownProducts()) {
         std::cout << "matching " << p << std::endl;
-        std::vector<OrderBookEntry> sales = orderBook.matchAsksToBids(p, currentTime);
+        std::vector<OrderBookEntry> sales =  orderBook.matchAsksToBids(p, currentTime);
         std::cout << "Sales: " << sales.size() << std::endl;
         for (OrderBookEntry& sale : sales) {
             std::cout << "Sale price: " << sale.price << " amount " << sale.amount << std::endl;
+            if (sale.username == "simuser") {
+                wallet.processSale(sale);
+            }
         }
     }
     currentTime = orderBook.getNextTime(currentTime);
