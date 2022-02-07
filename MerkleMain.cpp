@@ -40,11 +40,33 @@ void MerkleMain::printMarketStats() {
 }
 
 void MerkleMain::enterAsk() {
-    std::cout << "3: Place an ask" << std::endl;
+    std::cout << "Make an ask - enter the amount: product,price, amount, eg ETH/BTC,200,0.5" << std::endl;
+    std::string input;
+    std::getline(std::cin, input);
+    std::vector<std::string> tokens = CSVReader::tokenise(input, ',');
+
+    OrderBookEntry obe = CSVReader::stringsToOBE(
+            tokens[1],
+            tokens[2],
+            currentTime,
+            tokens[0],
+            OrderBookType::ask
+    );
 }
 
 void MerkleMain::enterBid() {
-    std::cout << "4: Place a bid" << std::endl;
+    std::cout << "Make an ask - enter the amount: product,price, amount, eg ETH/BTC,200,0.5" << std::endl;
+    std::string input;
+    std::getline(std::cin, input);
+    std::vector<std::string> tokens = CSVReader::tokenise(input, ',');
+
+    OrderBookEntry obe = CSVReader::stringsToOBE(
+            tokens[1],
+            tokens[2],
+            currentTime,
+            tokens[0],
+            OrderBookType::bid
+    );
 }
 
 void MerkleMain::printWallet() {
@@ -57,9 +79,16 @@ void MerkleMain::gotoNextTimeframe() {
 }
 
 int MerkleMain::getUserOption() {
-    int userOption;
+    int userOption = 0;
+    std::string line;
     std::cout << "Type in 1-6" << std::endl;
-    std::cin >> userOption;
+    std::getline(std::cin, line);
+    try{
+        userOption = std::stoi(line);
+    } catch(const std::exception& e) {
+
+    }
+    std::cout << "You chose: " << userOption << std::endl;
     return userOption;
 }
 
